@@ -1,16 +1,11 @@
 const express = require('express');
 const app = express();
 
-
-//实现获取url的模块
-const fn = (req, res, next) => {
-  const url = req.url;
-  console.log(url);
-  next();
-};
-
-app.use(fn);
-
+const user = require('./routes/user.js');
+const blog = require('./routes/blog.js');
+// 抽离子路由
+app.use('/user',user);
+app.use('/blog',blog);
 const port = 3000;
 app.listen(port,() => {
     console.log(`应用运行在${port}端口`);
