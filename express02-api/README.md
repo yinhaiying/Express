@@ -200,3 +200,53 @@ router.get('/', function (req, res) {
   res.send('hello world')
 })
 ```
+
+## request.xxx 和respponse.xxx
+request是我们请求中的request对象上具有的方法，通过这些方法可以获取请求的一些参数。
+response是我们请求的response对象上具有的方法，通过这些方法可以获取响应的一些参数。
+resquest和response的参数和方法大都跟http相关，这里只挑选几个容易错误使用的进行介绍，
+其他的大家可以查阅相关文档。
+####  req.baseUrl
+req.baseUrl是指路由的挂载点
+```javascript
+app.use(express.static(publicPath));
+const user = express.Router();
+
+app.use('/user',user);  // 路由挂载点是/user
+user.get('/add',(req,res) => {
+    console.log(req.baseUrl);  // req.baseUrl就是 /user
+    res.send('hello');
+})
+```
+####  req.originalUrl
+用于获取完整的url路径地址。
+```javascript
+user.get('/add',(req,res) => {
+    console.log(req.baseUrl);  // /user
+    console.log(req.originalUrl); // /user/add
+    res.send('hello');
+})
+```
+
+#### req.range
+用于进行分片下载
+```javascript
+var range = req.range(1000)
+// the type of the range
+if (range.type === 'bytes') {
+  // the ranges
+  range.forEach(function (r) {
+    // do something with r.start and r.end
+  })
+}
+```
+上面的req.range(1000)，表示1000个字节进行切片，然后一片一片地进行传输。
+## 总结
+这篇文章主要介绍Express的一些基础，主要包括:
+1. express.xxx中间件
+2. app.xxx方法
+3. request.xxx方法
+4. response.xxx
+5. routr.xxx
+
+掌握了这些基础的API，再加上我们之前学习过的Express的核心——中间件，我们就可以使用Express进行后台开发了。离全栈之路又走进了一步。
